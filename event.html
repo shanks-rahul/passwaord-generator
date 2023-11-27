@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(32, 25, 40);
+            color: white;
+        }
+
+        .box {
+            display: flex;
+            flex-direction: column;
+            margin: 25px 19px;
+        }
+
+        .container {
+            border: 1px solid wheat;
+            height: 16rem;
+            width: 25rem;
+            margin: 5rem auto;
+        }
+
+        .container h1 {
+            text-align: center;
+        }
+
+        .include-box {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .pass-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 12px;
+        }
+
+        .pass-length {
+            width: 3rem;
+        }
+
+        .btn {
+            padding: 2px 7px;
+            color: white;
+            background-color: #9c5ef1;
+            border-radius: 8px;
+        }
+
+        .pass {
+            pointer-events: none;
+            padding: 3px 16px;
+            border-radius: 7px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>password generator</h1>
+        <div class="pass-box">
+            <input type="text" class="pass" name="" id="" placeholder="click on generate button"><br>
+            <div class="buttons">
+                <button class="btn">generate</button><button class="btn copy-btn">copy to clipboard</button>
+            </div>
+        </div>
+        <div class="box">
+            <label class="include-box" for="length">Password Length
+                <input class="pass-length" name="length" type="number">
+            </label>
+            <label class="include-box" for="upper">UpperCase
+                <input class="upper-checkbox" name="upper" type="checkbox">
+            </label>
+            <label class="include-box" for="lower">LowerCase
+                <input class="lower-checkbox" name="lower" type="checkbox">
+            </label>
+            <label class="include-box" for="symbol">symbols
+                <input class="symbol-checkbox" name="symbol" type="checkbox">
+            </label>
+            <label class="include-box" for="number">number
+                <input class="number-checkbox" name="symbol" type="checkbox">
+            </label>
+        </div>
+    </div>
+
+
+    <script>
+        const len = document.querySelector(".pass-length");
+        const btn = document.querySelector(".btn");
+        const copy_button=document.querySelector(".copy-btn");
+        const symbol_checkbox = document.querySelector(".symbol-checkbox");
+        const lower_checkbox = document.querySelector(".lower-checkbox");
+        const upper_checkbox = document.querySelector(".upper-checkbox");
+        const number_checkbox = document.querySelector(".number-checkbox");
+        const res = document.querySelector(".pass");
+
+        let password = '';
+        let upper = "ABCDEGHIJKLMNOPQRSTUVWXYZ";
+        let lower = "abcdefghijklmnopqrstuvwxyz";
+        let symbols = "~`!@#$%^&*(_+-=?,.<>/|{[]}:;'";
+        function generatePassword() {
+            for (let i = 0; i < len.value; i++) {
+
+                let randomNum = Math.floor(Math.random() * 9);
+                if (number_checkbox.checked) {
+                    password += randomNum;
+                }
+                if (upper_checkbox.checked) {
+                    password += upper[Math.floor(Math.random() * 25)];
+                }
+                if (lower_checkbox.checked) {
+                    password += lower[Math.floor(Math.random() * 25)];
+                }
+                if (symbol_checkbox.checked) {
+                    password += symbols[Math.floor(Math.random() * 28)];
+                }
+
+
+
+                if (password.length >= len.value) {
+                    break;
+                }
+            }
+            if (password.length == 0) {
+                alert("include something");
+            }
+            else {
+                res.value = password;
+            }
+            password = '';
+        }
+        btn.addEventListener('click', () => {
+            generatePassword();
+        });
+        let text = document.querySelector(".pass").value;
+        const copyContent = async () => {
+            try {
+                await navigator.clipboard.writeText(text);
+                alert("Text Copied To Clipboard")
+            } catch (err) {
+                alert('Failed to copy');
+            }
+        }
+        copy_button.addEventListener('click',copyContent);
+
+
+    </script>
+</body>
+
+</html>
